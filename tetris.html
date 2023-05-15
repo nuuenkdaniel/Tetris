@@ -356,23 +356,23 @@
     
     //Updates the function by redrawing the shape and moving the shape down 
     function update(){
-      draw();
-      console.log(checkFilled());
+      //draw();
+      //console.log(checkFilled());
       //Checks if it will hit another block or the ground
       if((positionY+bottomRow+2) > tileRow || checkBottom()){
         reset();
       }
       else{
-        positionY++;
+        //positionY++;
       }
     }
 
-    tempShape = shapes[Math.round((Math.random()*6))];
+    tempShape = shapes[/*Math.round((Math.random()*6))*/3];
     console.log("Left: "+findLeft(tempShape));
     console.log("Top: "+findTop(tempShape));
     findSides(tempShape);
     drawGrid();
-    //draw();
+    draw();
     var interval = setInterval(update, 1000);
   </script>
 
