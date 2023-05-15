@@ -133,13 +133,31 @@
             tempShape = tShape;
             findSides(tempShape);
             draw();
-            console.log("rotated");
+            console.log("rotated cw");
             return;
         }
-        console.log("cannot rotate, exceeds boundary");
+        else{
+            console.log("cannot rotate, exceeds boundary");
+            return;
+        }
       }
       else if(direction == "ccw"){
-        flipShapeCCW(tempShape);
+        let tShape = rotateShapeCCW(tempShape);
+        let leftColumn = findLeft(tShape);
+        let topRow = findTop(tShape);
+        let tBottomRow = findBottom(tShape);
+        let tRightColumn = findRight(tShape);
+        if(((positionX+(tRightColumn-leftColumn)) < tileColumn) && ((positionY+(tBottomRow-topRow)) < tileRow)){
+            tempShape = tShape;
+            findSides(tempShape);
+            draw();
+            console.log("rotated ccw");
+            return;
+        }
+        else{
+            console.log("cannot rotate, exceeds boundary");
+            return;
+        }
       }
     }
 
@@ -204,11 +222,6 @@
       let tBottomRow = findBottom(rShape);
       let tRightColumn = findRight(rShape);
       let tnum = 0;
-      //Checks if the right column of the newly translated shape exceeds the right border or bottom border
-      /*if(((positionX+(tRightColumn-leftColumn)) > (tileColumn-1)) || ((positionY+(tBottomRow-topRow)) > (tileRow-1))){
-        console.log("Cannot rotate exceeds boundary");
-        return;
-      }*/
       //shifts the shape back to the top left of the grid
       if((leftColumn != 0)){
         for(let i = topRow; i < tBottomRow+1; i++){
@@ -227,11 +240,34 @@
     
     //turns the shape -90 degrees
     function rotateShapeCCW(shape){
-      let tShape;
-      for(var i = 0; i < 3; i++){
-        for(var e = 0; e < 3; e++){
+        let rShape = [];
+        for(let j = 0; j < 4; j++){
+            rShape[j] = [];
+            for(let k = 0; k < 4; k++){
+                rShape[j][k] = shape[j][k];
+            }
         }
-      }
+        rShape = rShape[0].map((val, index) => rShape.map(row => row[row.length-1-index]));
+
+        let leftColumn = findLeft(rShape);
+        let topRow = findTop(rShape);
+        let tBottomRow = findBottom(rShape);
+        let tRightColumn = findRight(rShape);
+        let tnum = 0;
+        //shifts the shape back to the top left of the grid
+        if((leftColumn != 0)){
+            for(let i = topRow; i < tBottomRow+1; i++){
+                for(let e = leftColumn; e < tRightColumn+1; e++){
+                    if(rShape[i][e] == 1){
+                        tnum = rShape[i][e];
+                        rShape[i-topRow][e-leftColumn] = tnum;
+                        rShape[i][e] = 0;
+                    }
+                }
+            }
+        }
+        
+        return rShape;
     }
 
     //checks if there is block below the shape
