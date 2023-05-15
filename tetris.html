@@ -124,14 +124,23 @@
     //rotates the shape by the given parameter
     function rotateShape(direction){
       if(direction == "cw"){
-        tempShape = rotateShapeCW(tempShape);
-        findSides(tempShape);
-        draw();
+        let tShape = rotateShapeCW(tempShape);
+        let leftColumn = findLeft(tShape);
+        let topRow = findTop(tShape);
+        let tBottomRow = findBottom(tShape);
+        let tRightColumn = findRight(tShape);
+        if(((positionX+(tRightColumn-leftColumn)) < tileColumn) && ((positionY+(tBottomRow-topRow)) < tileRow)){
+            tempShape = tShape;
+            findSides(tempShape);
+            draw();
+            console.log("rotated");
+            return;
+        }
+        console.log("cannot rotate, exceeds boundary");
       }
       else if(direction == "ccw"){
         flipShapeCCW(tempShape);
       }
-      draw();
     }
 
     //creates the tiles for the grid
@@ -181,25 +190,29 @@
 
     //turns the shape 90 degrees
     function rotateShapeCW(shape){
-      
-      var rShape = [];
-      for(var j = 0; j < 4; j++){
+      let rShape = [];
+      for(let j = 0; j < 4; j++){
         rShape[j] = [];
-        for(var k = 0; k < 4; k++){
+        for(let k = 0; k < 4; k++){
           rShape[j][k] = shape[j][k];
         }
       }
       rShape = rShape.map((val, index) => rShape.map(row => row[index]).reverse());
       
-      var leftColumn = findLeft(rShape);
-      var topRow = findTop(rShape);
-      var tBottomRow = findBottom(rShape);
-      var tRightColumn = findRight(rShape);
-      var tnum = 0;
+      let leftColumn = findLeft(rShape);
+      let topRow = findTop(rShape);
+      let tBottomRow = findBottom(rShape);
+      let tRightColumn = findRight(rShape);
+      let tnum = 0;
+      //Checks if the right column of the newly translated shape exceeds the right border or bottom border
+      /*if(((positionX+(tRightColumn-leftColumn)) > (tileColumn-1)) || ((positionY+(tBottomRow-topRow)) > (tileRow-1))){
+        console.log("Cannot rotate exceeds boundary");
+        return;
+      }*/
       //shifts the shape back to the top left of the grid
       if((leftColumn != 0)){
-        for(var i = topRow; i < tBottomRow+1; i++){
-          for(var e = leftColumn; e < tRightColumn+1; e++){
+        for(let i = topRow; i < tBottomRow+1; i++){
+          for(let e = leftColumn; e < tRightColumn+1; e++){
             if(rShape[i][e] == 1){
               tnum = rShape[i][e];
               rShape[i-topRow][e-leftColumn] = tnum;
