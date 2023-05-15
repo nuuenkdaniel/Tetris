@@ -193,17 +193,16 @@
       
       var leftColumn = findLeft(rShape);
       var topRow = findTop(rShape);
+      var tBottomRow = findBottom(rShape);
+      var tRightColumn = findRight(rShape);
       var tnum = 0;
       //shifts the shape back to the top left of the grid
-      console.log("left column: "+leftColumn);
-      console.log("top row: "+topRow);
-      //shifts the shape back to left
       if((leftColumn != 0)){
-        for(var i = topRow; i < bottomRow+1; i++){
-          for(var e = leftColumn; e < rightColumn+1; e++){
+        for(var i = topRow; i < tBottomRow+1; i++){
+          for(var e = leftColumn; e < tRightColumn+1; e++){
             if(rShape[i][e] == 1){
               tnum = rShape[i][e];
-              rShape[i][e-leftColumn] = tnum;
+              rShape[i-topRow][e-leftColumn] = tnum;
               rShape[i][e] = 0;
             }
           }
@@ -356,23 +355,23 @@
     
     //Updates the function by redrawing the shape and moving the shape down 
     function update(){
-      //draw();
+      draw();
       //console.log(checkFilled());
       //Checks if it will hit another block or the ground
       if((positionY+bottomRow+2) > tileRow || checkBottom()){
         reset();
       }
       else{
-        //positionY++;
+        positionY++;
       }
     }
 
-    tempShape = shapes[/*Math.round((Math.random()*6))*/3];
+    tempShape = shapes[Math.round((Math.random()*6))];
     console.log("Left: "+findLeft(tempShape));
     console.log("Top: "+findTop(tempShape));
     findSides(tempShape);
     drawGrid();
-    draw();
+    //draw();
     var interval = setInterval(update, 1000);
   </script>
 
