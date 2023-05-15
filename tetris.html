@@ -197,15 +197,16 @@
       //shifts the shape back to the top left of the grid
       console.log("left column: "+leftColumn);
       console.log("top row: "+topRow);
+      //shifts the shape back to left
       if((leftColumn != 0)){
-        for(var i = 0; i < bottomRow+1; i++){
-          for(var e = 0; e < rightColumn+1; e++){
+        for(var i = topRow; i < bottomRow+1; i++){
+          for(var e = leftColumn; e < rightColumn+1; e++){
             if(rShape[i][e] == 1){
               tnum = rShape[i][e];
               rShape[i][e-leftColumn] = tnum;
               rShape[i][e] = 0;
             }
-          }//Hello
+          }
         }
       }
       
