@@ -129,14 +129,15 @@
         let topRow = findTop(tShape);
         let tBottomRow = findBottom(tShape);
         let tRightColumn = findRight(tShape);
-        console.log(positionX+tRightColumn);
+        //check if rotate crosses boundary
         if((positionX+tRightColumn+1 > tileColumn) || (positionY+tBottomRow+1 > tileRow)){
           console.log("cannot rotate, exceeds boundary");
           return;
         }
-        for(var i = 0; i < tRightColumn+1; i++){
-          for(var e = 0; e < tBottomRow+1; e++){
-            if(tShape[i][e] == 1 && tile[i][e].tcolor == "#00FF00"){
+        //check if block is in the way
+        for(var i = 0; i < tBottomRow+1; i++){
+          for(var e = 0; e < tRightColumn+1; e++){
+            if(tShape[i][e] == 1 && tile[positionX+e][positionY+i].tcolor == "#00FF00"){
               console.log("cannot rotate, block in the way");
               return;
             }
@@ -146,7 +147,6 @@
         findSides(tempShape);
         draw();
         console.log("rotated cw");
-        return;
       }
       else if(direction == "ccw"){
         let tShape = rotateShapeCCW(tempShape);
