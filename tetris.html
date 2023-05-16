@@ -247,34 +247,33 @@
     
     //turns the shape -90 degrees
     function rotateShapeCCW(shape){
-        let rShape = [];
-        for(let j = 0; j < 4; j++){
-            rShape[j] = [];
-            for(let k = 0; k < 4; k++){
-                rShape[j][k] = shape[j][k];
-            }
+      let rShape = [];
+      for(let j = 0; j < 4; j++){
+        rShape[j] = [];
+        for(let k = 0; k < 4; k++){
+          rShape[j][k] = shape[j][k];
         }
-        rShape = rShape[0].map((val, index) => rShape.map(row => row[row.length-1-index]));
+      }
+      rShape = rShape[0].map((val, index) => rShape.map(row => row[row.length-1-index]));
 
-        let leftColumn = findLeft(rShape);
-        let topRow = findTop(rShape);
-        let tBottomRow = findBottom(rShape);
-        let tRightColumn = findRight(rShape);
-        let tnum = 0;
-        //shifts the shape back to the top left of the grid
-        if((leftColumn != 0)){
-            for(let i = topRow; i < tBottomRow+1; i++){
-                for(let e = leftColumn; e < tRightColumn+1; e++){
-                    if(rShape[i][e] == 1){
-                        tnum = rShape[i][e];
-                        rShape[i-topRow][e-leftColumn] = tnum;
-                        rShape[i][e] = 0;
-                    }
-                }
+      let leftColumn = findLeft(rShape);
+      let topRow = findTop(rShape);
+      let tBottomRow = findBottom(rShape);
+      let tRightColumn = findRight(rShape);
+      let tnum = 0;
+      //shifts the shape back to the top left of the grid
+      if((leftColumn != 0)){
+        for(let i = topRow; i < tBottomRow+1; i++){
+          for(let e = leftColumn; e < tRightColumn+1; e++){
+            if(rShape[i][e] == 1){
+              tnum = rShape[i][e];
+              rShape[i-topRow][e-leftColumn] = tnum;
+              rShape[i][e] = 0;
             }
+          }
         }
-        
-        return rShape;
+      } 
+      return rShape;
     }
     
     //checks if there is a block pr floor below
@@ -399,10 +398,10 @@
     }
     
     //checks if the the bottom row of the grid is filled
-    function checkFilled(){
+    function checkFilled(index){
       var rowAmount = 0;
       for(var i = 0; i < tileColumn; i++){
-        if(tile.tcolor ==  "#00FF00"){
+        if(tile[i][index].tcolor != "#000000"){
           rowAmount++;
         }
       }
@@ -411,18 +410,14 @@
       }
       return false;
     }
-    
+
     //Updates the function by redrawing the shape and moving the shape down 
     function update(){
       draw();
-      //console.log(checkFilled());
       //Checks if it will hit another block or the ground
-      if(checkBottom()){
-        reset();
-      }
-      else{
-        positionY++;
-      }
+      checkBottom() ? reset() : positionY++;
+      //Deletes bottom row and shifts all blocks down to replace deleted blocks
+      console.log(checkFilled(9));
     }
 
     tempShape = shapes[Math.round((Math.random()*6))];
