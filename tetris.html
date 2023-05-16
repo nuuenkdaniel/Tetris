@@ -115,7 +115,7 @@
     
     //moves the vertical position of the shape
     function moveV(distance){
-      if(((positionY+bottomRow < tileRow) && (positionY != 0))&&(checkBottom() == false)){
+      if(((positionY+bottomRow < tileRow)&&(positionY != 0))&&(checkBottom() == false)){
         positionY += distance;
         draw();
       }
@@ -276,12 +276,15 @@
         
         return rShape;
     }
-
-    //checks if there is block below the shape
+    
+    //checks if there is a block pr floor below
     function checkBottom(){
-      for(var i = 0; i < rightColumn+1; i++){
-        for(var e = 0; e < bottomRow+1; e++){
-          if((tile[positionX+i][positionY+e+1].tcolor != "#000000")&&(tempShape[e][i] == 1)){
+      if((positionY+bottomRow+1) > tileRow-1){
+        return true;
+      }
+      for(var i = 0; i < bottomRow+1; i++){
+        for(var e = 0; e < rightColumn+1; e++){
+          if((tile[positionX+e][positionY+i+1].tcolor != "#000000")&&(tempShape[i][e] == 1)){
             return true;
           }
         }
@@ -414,7 +417,7 @@
       draw();
       //console.log(checkFilled());
       //Checks if it will hit another block or the ground
-      if((positionY+bottomRow+2) > tileRow || checkBottom()){
+      if(checkBottom()){
         reset();
       }
       else{
