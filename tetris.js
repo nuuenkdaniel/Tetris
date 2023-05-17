@@ -394,6 +394,8 @@ function checkAndReplace(){
         tile[e][i].tcolor = "#000000";
       }
       counter++;
+      time *= .5;
+      console.log(time);
       for(let j = i-1; j > 0; j--){
         for(let k = 0; k < tileColumn; k++){
           if(tile[k][j].tcolor != "#000000"){
