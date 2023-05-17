@@ -108,31 +108,6 @@ function moveV(distance){
   }
 }
 
-//rotates the shape in the direction of the given parameter
-function rotateShape(direction){
-  let tShape = (direction == "cw") ? rotateShapeCW(tempShape) : rotateShapeCCW(tempShape);
-  let tBottomRow = findBottom(tShape);
-  let tRightColumn = findRight(tShape);
-  //check if rotate crosses boundary
-  if((positionX+tRightColumn+1 > tileColumn) || (positionY+tBottomRow+1 > tileRow)){
-    console.log("cannot rotate, exceeds boundary");
-    return;
-  }
-  //check if block is in the way
-  for(let i = 0; i < tBottomRow+1; i++){
-    for(let e = 0; e < tRightColumn+1; e++){
-      if(tShape[i][e] == 1 && tile[positionX+e][positionY+i].tcolor != "#000000"){
-        console.log("cannot rotate, block in the way");
-        return;
-      }
-    }
-  }
-  tempShape = tShape;
-  findSides(tempShape);
-  draw();
-  console.log("rotated "+direction);
-}
-
 //creates the tiles for the grid
 let tile = [];
 for (let i = 0; i < tileColumn; i++) {
@@ -177,8 +152,33 @@ function drawShape(object, color){
   }
 }
 
+//rotates the shape in the direction of the given parameter
+function rotateShape(direction){
+  let tShape = rotate(tempShape, direction)
+  let tBottomRow = findBottom(tShape);
+  let tRightColumn = findRight(tShape);
+  //check if rotate crosses boundary
+  if((positionX+tRightColumn+1 > tileColumn) || (positionY+tBottomRow+1 > tileRow)){
+    console.log("cannot rotate, exceeds boundary");
+    return;
+  }
+  //check if block is in the way
+  for(let i = 0; i < tBottomRow+1; i++){
+    for(let e = 0; e < tRightColumn+1; e++){
+      if(tShape[i][e] == 1 && tile[positionX+e][positionY+i].tcolor != "#000000"){
+        console.log("cannot rotate, block in the way");
+        return;
+      }
+    }
+  }
+  tempShape = tShape;
+  findSides(tempShape);
+  draw();
+  console.log("rotated "+direction);
+}
+
 //turns the shape 90 degrees
-function rotateShapeCW(shape){
+function rotate(shape, direction){
   let rShape = [];
   for(let j = 0; j < 4; j++){
     rShape[j] = [];
@@ -186,7 +186,7 @@ function rotateShapeCW(shape){
       rShape[j][k] = shape[j][k];
     }
   }
-  rShape = rShape.map((val, index) => rShape.map(row => row[index]).reverse());
+  rShape = (direction == "cw") ? (rShape.map((val, index) => rShape.map(row => row[index]).reverse())):(rShape[0].map((val, index) => rShape.map(row => row[row.length-1-index])));
   
   let leftColumn = findLeft(rShape);
   let topRow = findTop(rShape);
@@ -210,7 +210,7 @@ function rotateShapeCW(shape){
 }
 
 //turns the shape -90 degrees
-function rotateShapeCCW(shape){
+/*function rotate(shape){
   let rShape = [];
   for(let j = 0; j < 4; j++){
     rShape[j] = [];
@@ -238,9 +238,13 @@ function rotateShapeCCW(shape){
     }
   } 
   return rShape;
+}*/
+
+function shiftTopLeft(shape){
+
 }
 
-//checks if there is a block pr floor below
+//checks if there is a block or floor below
 function checkBottom(){
   if((positionY+bottomRow+1) > tileRow-1){
     return true;
