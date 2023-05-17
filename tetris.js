@@ -16,6 +16,7 @@ let bottomRow = 3;
 let rightColumn = 3;
 let score = 0;
 let tempColor = "00FF00";
+let time = 1000;
 
 let shapes = [
   [
@@ -121,7 +122,7 @@ function rotateShape(direction){
     //check if block is in the way
     for(let i = 0; i < tBottomRow+1; i++){
       for(let e = 0; e < tRightColumn+1; e++){
-        if(tShape[i][e] == 1 && tile[positionX+e][positionY+i].tcolor == "#00FF00"){
+        if(tShape[i][e] == 1 && tile[positionX+e][positionY+i].tcolor != "#000000"){
           console.log("cannot rotate, block in the way");
           return;
         }
@@ -372,6 +373,11 @@ function reset(){
   tempShape = shapes[Math.round((Math.random()*6))];
   findSides(tempShape);
   tempColor = tempShape[4][0];
+  //Checks if the new block is inside another block if so gameover
+  if(checkGameOver()){
+    alert("GAME OVER, your score was: "+score);
+    document.location.reload();
+  }
 }
 
 //draws a score
@@ -421,6 +427,18 @@ function checkAndReplace(){
   return counter;
 }
 
+//Checks if the block is inside another block
+function checkGameOver(){
+  for(let i = 0; i < bottomRow+1; i++){
+    for(let e = 0; e < rightColumn+1; e++){
+      if(tempShape[i][e] == 1 && tile[positionX+e][positionY+i].tcolor != "#000000"){
+        console.log("true");
+        return true;
+      }
+    }
+  }
+}
+
 //Updates the function by redrawing the shape and moving the shape down 
 function update(){
   draw();
@@ -434,4 +452,4 @@ tempShape = shapes[Math.round((Math.random()*6))];
 findSides(tempShape);
 tempColor = tempShape[4][0];
 drawGrid();
-const interval = setInterval(update, 1000);
+const interval = setInterval(update, time);
