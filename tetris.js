@@ -110,47 +110,27 @@ function moveV(distance){
 
 //rotates the shape in the direction of the given parameter
 function rotateShape(direction){
-  if(direction == "cw"){
-    let tShape = rotateShapeCW(tempShape);
-    let tBottomRow = findBottom(tShape);
-    let tRightColumn = findRight(tShape);
-    //check if rotate crosses boundary
-    if((positionX+tRightColumn+1 > tileColumn) || (positionY+tBottomRow+1 > tileRow)){
-      console.log("cannot rotate, exceeds boundary");
-      return;
-    }
-    //check if block is in the way
-    for(let i = 0; i < tBottomRow+1; i++){
-      for(let e = 0; e < tRightColumn+1; e++){
-        if(tShape[i][e] == 1 && tile[positionX+e][positionY+i].tcolor != "#000000"){
-          console.log("cannot rotate, block in the way");
-          return;
-        }
+  let tShape = (direction == "cw") ? rotateShapeCW(tempShape) : rotateShapeCCW(tempShape);
+  let tBottomRow = findBottom(tShape);
+  let tRightColumn = findRight(tShape);
+  //check if rotate crosses boundary
+  if((positionX+tRightColumn+1 > tileColumn) || (positionY+tBottomRow+1 > tileRow)){
+    console.log("cannot rotate, exceeds boundary");
+    return;
+  }
+  //check if block is in the way
+  for(let i = 0; i < tBottomRow+1; i++){
+    for(let e = 0; e < tRightColumn+1; e++){
+      if(tShape[i][e] == 1 && tile[positionX+e][positionY+i].tcolor != "#000000"){
+        console.log("cannot rotate, block in the way");
+        return;
       }
     }
-    tempShape = tShape;
-    findSides(tempShape);
-    draw();
-    console.log("rotated cw");
   }
-  else if(direction == "ccw"){
-    let tShape = rotateShapeCCW(tempShape);
-    let leftColumn = findLeft(tShape);
-    let topRow = findTop(tShape);
-    let tBottomRow = findBottom(tShape);
-    let tRightColumn = findRight(tShape);
-    if(((positionX+(tRightColumn-leftColumn)) < tileColumn) && ((positionY+(tBottomRow-topRow)) < tileRow)){
-        tempShape = tShape;
-        findSides(tempShape);
-        draw();
-        console.log("rotated ccw");
-        return;
-    }
-    else{
-        console.log("cannot rotate, exceeds boundary");
-        return;
-    }
-  }
+  tempShape = tShape;
+  findSides(tempShape);
+  draw();
+  console.log("rotated "+direction);
 }
 
 //creates the tiles for the grid
