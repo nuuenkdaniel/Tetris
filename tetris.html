@@ -27,6 +27,7 @@
     var positionX = 3;
     var bottomRow = 3;
     var rightColumn = 3;
+    var score = 0;
 
     var shapes = [
       [
@@ -384,9 +385,10 @@
           }
         }
       }
+      console.log("reset");
       positionY = 0;
       positionX = (tileColumn/2) - 1;
-      tempShape = shapes[Math.round((Math.random()*6))];
+      tempShape = shapes[Math.round(/*(Math.random()*6)*/6)];
       findSides(tempShape);
     }
 
@@ -411,18 +413,37 @@
       return false;
     }
 
+    function checkAndReplace(){
+      var counter = 0;
+      for(var i = 0; i < tileRow; i++){
+        if(checkFilled(i)){
+          for(var e = 0; e < tileColumn; e++){
+            tile[e][i].tcolor = "000000";
+          }
+          counter++;
+          for(var j = i-1; j > 0; j--){
+            for(var k = 0; k < tileColumn; k++){
+              if(tile[k][j].tcolor != "000000"){
+                tile[k][j+1].tcolor = tile[k][j].tcolor;
+                tile[k][j].tcolor = "000000";
+              }
+            }
+          }
+        }
+      }
+      return counter;
+    }
+
     //Updates the function by redrawing the shape and moving the shape down 
     function update(){
       draw();
       //Checks if it will hit another block or the ground
       checkBottom() ? reset() : positionY++;
       //Deletes bottom row and shifts all blocks down to replace deleted blocks
-      console.log(checkFilled(9));
+      checkAndReplace();
     }
 
-    tempShape = shapes[Math.round((Math.random()*6))];
-    console.log("Left: "+findLeft(tempShape));
-    console.log("Top: "+findTop(tempShape));
+    tempShape = shapes[Math.round(/*(Math.random()*6)*/6)];
     findSides(tempShape);
     drawGrid();
     //tile[3][5].tcolor = "#00FF00";
