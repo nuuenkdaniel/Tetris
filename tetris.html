@@ -206,7 +206,7 @@
           if(shape[e][i] == 1){
             ctx.beginPath();
             ctx.rect(tile[i+positionX][e+positionY].x, tile[i+positionX][e+positionY].y, tileWidth, tileHeight);
-            ctx.fillStyle = "#00FF00"
+            ctx.fillStyle = "#FF0000"
             ctx.fill();
             ctx.closePath();
           }
@@ -388,7 +388,7 @@
       console.log("reset");
       positionY = 0;
       positionX = (tileColumn/2) - 1;
-      tempShape = shapes[Math.round(/*(Math.random()*6)*/6)];
+      tempShape = shapes[Math.round((Math.random()*6))];
       findSides(tempShape);
     }
 
@@ -415,17 +415,17 @@
 
     function checkAndReplace(){
       var counter = 0;
-      for(var i = 0; i < tileRow; i++){
+      for(var i = tileRow-1; i >= 0; i--){
         if(checkFilled(i)){
           for(var e = 0; e < tileColumn; e++){
-            tile[e][i].tcolor = "000000";
+            tile[e][i].tcolor = "#000000";
           }
           counter++;
           for(var j = i-1; j > 0; j--){
             for(var k = 0; k < tileColumn; k++){
-              if(tile[k][j].tcolor != "000000"){
+              if(tile[k][j].tcolor != "#000000"){
                 tile[k][j+1].tcolor = tile[k][j].tcolor;
-                tile[k][j].tcolor = "000000";
+                tile[k][j].tcolor = "#000000";
               }
             }
           }
@@ -437,13 +437,13 @@
     //Updates the function by redrawing the shape and moving the shape down 
     function update(){
       draw();
+      //Deletes bottom row and shifts all blocks down to replace deleted blocks
+      score = 1000*checkAndReplace(); 
       //Checks if it will hit another block or the ground
       checkBottom() ? reset() : positionY++;
-      //Deletes bottom row and shifts all blocks down to replace deleted blocks
-      checkAndReplace();
     }
 
-    tempShape = shapes[Math.round(/*(Math.random()*6)*/6)];
+    tempShape = shapes[Math.round((Math.random()*6))];
     findSides(tempShape);
     drawGrid();
     //tile[3][5].tcolor = "#00FF00";
