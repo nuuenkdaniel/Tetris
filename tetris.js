@@ -374,9 +374,17 @@ function reset(){
   tempColor = tempShape[4][0];
 }
 
+//draws a score
+function drawScore() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Score: " + score, 8, 20);
+}
+
 //clears the board and draws the next shape
 function draw(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawScore();
   drawGrid();
   drawShape(tempShape, tempColor);
 }
