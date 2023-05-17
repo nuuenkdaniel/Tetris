@@ -209,37 +209,6 @@ function rotate(shape, direction){
   return rShape;
 }
 
-//turns the shape -90 degrees
-/*function rotate(shape){
-  let rShape = [];
-  for(let j = 0; j < 4; j++){
-    rShape[j] = [];
-    for(let k = 0; k < 4; k++){
-      rShape[j][k] = shape[j][k];
-    }
-  }
-  rShape = rShape[0].map((val, index) => rShape.map(row => row[row.length-1-index]));
-
-  let leftColumn = findLeft(rShape);
-  let topRow = findTop(rShape);
-  let tBottomRow = findBottom(rShape);
-  let tRightColumn = findRight(rShape);
-  let tnum = 0;
-  //shifts the shape back to the top left of the grid
-  if((leftColumn != 0)){
-    for(let i = topRow; i < tBottomRow+1; i++){
-      for(let e = leftColumn; e < tRightColumn+1; e++){
-        if(rShape[i][e] == 1){
-          tnum = rShape[i][e];
-          rShape[i-topRow][e-leftColumn] = tnum;
-          rShape[i][e] = 0;
-        }
-      }
-    }
-  } 
-  return rShape;
-}*/
-
 function shiftTopLeft(shape){
 
 }
