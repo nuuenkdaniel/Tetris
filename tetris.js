@@ -15,6 +15,7 @@ let positionX = 3;
 let bottomRow = 3;
 let rightColumn = 3;
 let score = 0;
+let tempColor = "00FF00";
 
 let shapes = [
   [
@@ -22,49 +23,49 @@ let shapes = [
     [1, 1, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [1]//yellow
+    ["#FFFF00"]//yellow
   ],
   [
     [1, 0, 0, 0],
     [1, 0, 0, 0],
     [1, 1, 0, 0],
     [0, 0, 0, 0],
-    [2]//orange
+    ["#FFA500"]//orange
   ],
   [
     [0, 1, 0, 0],
     [0, 1, 0, 0],
     [1, 1, 0, 0],
     [0, 0, 0, 0],
-    [3]//blue
+    ["#0000FF"]//blue
   ],
   [
     [1, 1, 1, 0],
     [0, 1, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [4]//purple
+    ["#800080"]//purple
   ],
   [
     [1, 1, 0, 0],
     [0, 1, 1, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [5]//red
+    ["#FF0000"]//red
   ],
   [
     [0, 1, 1, 0],
     [1, 1, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [6]//green
+    ["#00FF00"]//green
   ],
   [
     [1, 0, 0, 0],
     [1, 0, 0, 0],
     [1, 0, 0, 0],
     [1, 0, 0, 0],
-    [7]//cyan
+    ["#00FFFF"]//cyan
   ]
   ]
 
@@ -181,14 +182,13 @@ function drawGrid(){
 let tempShape = [];
 
 //draws the shape on the screen
-function drawShape(object){
-  let shape = object;
+function drawShape(object, color){
   for(let i = 0; i < 4; i++){
     for(let e = 0; e < 4; e++){
-      if(shape[e][i] == 1){
+      if(object[e][i] == 1){
         ctx.beginPath();
         ctx.rect(tile[i+positionX][e+positionY].x, tile[i+positionX][e+positionY].y, tileWidth, tileHeight);
-        ctx.fillStyle = "#FF0000"
+        ctx.fillStyle = color;
         ctx.fill();
         ctx.closePath();
       }
@@ -363,7 +363,7 @@ function reset(){
   for(let i = 0; i < 4; i++){
     for(let e = 0; e < 4; e++){
       if(tempShape[e][i] == 1){
-        tile[i+positionX][e+positionY].tcolor = "#00FF00";
+        tile[i+positionX][e+positionY].tcolor = tempColor;
       }
     }
   }  
@@ -371,13 +371,14 @@ function reset(){
   positionX = (tileColumn/2) - 1;
   tempShape = shapes[Math.round((Math.random()*6))];
   findSides(tempShape);
+  tempColor = tempShape[4][0];
 }
 
 //clears the board and draws the next shape
 function draw(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGrid();
-  drawShape(tempShape);
+  drawShape(tempShape, tempColor);
 }
 
 //checks if the the bottom row of the grid is filled
@@ -423,5 +424,6 @@ function update(){
 
 tempShape = shapes[Math.round((Math.random()*6))];
 findSides(tempShape);
+tempColor = tempShape[4][0];
 drawGrid();
 const interval = setInterval(update, 1000);
