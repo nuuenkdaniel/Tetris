@@ -177,7 +177,7 @@ function rotateShape(direction){
   console.log("rotated "+direction);
 }
 
-//turns the shape 90 degrees
+//turns the shape 90 degrees cw or ccw 
 function rotate(shape, direction){
   let rShape = [];
   for(let j = 0; j < 4; j++){
@@ -207,10 +207,6 @@ function rotate(shape, direction){
   }
   
   return rShape;
-}
-
-function shiftTopLeft(shape){
-
 }
 
 //checks if there is a block or floor below
